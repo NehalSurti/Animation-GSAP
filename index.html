@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Rotating Squares Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            perspective: 800px;
+        }
+
+        .container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            transform-style: preserve-3d;
+            transform: rotateX(50deg) rotateY(30deg);
+        }
+
+        .square {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 5px solid transparent; /* Ensure border is visible */
+        }
+
+        .square:nth-child(1) {
+            border-color: black;
+        }
+
+        .square:nth-child(2) {
+            border-color: blue;
+        }
+
+        .square:nth-child(3) {
+            border-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.0/gsap.min.js"></script>
+    <script>
+        // Function to animate background colors
+        function animateBackgroundColor(selector, colors, duration) {
+            gsap.to(selector, {
+                backgroundColor: colors[0],
+                duration: duration / colors.length,
+                repeat: -1,
+                yoyo: true,
+                ease: "none",
+                onComplete: function() {
+                    colors.push(colors.shift());
+                    animateBackgroundColor(selector, colors, duration);
+                }
+            });
+        }
+
+        // Define colors for each square
+        const colors1 = ["#FF5733", "#33FF57", "#3357FF"];
+        const colors2 = ["#FF33A1", "#A133FF", "#33FFA1"];
+        const colors3 = ["#FFFF33", "#33FFFF", "#FF33FF"];
+
+        // Animate the rotation of the first square (Y-axis)
+        gsap.to(".square:nth-child(1)", {
+            rotationY: 360,
+            duration: 5,
+            repeat: -1,
+            ease: "linear"
+        });
+
+        // Animate the background color of the first square
+        animateBackgroundColor(".square:nth-child(1)", colors1, 5);
+
+        // Animate the rotation of the second square (opposite Y-axis)
+        gsap.to(".square:nth-child(2)", {
+            rotationY: -360,
+            duration: 5,
+            repeat: -1,
+            ease: "linear"
+        });
+
+        // Animate the background color of the second square
+        animateBackgroundColor(".square:nth-child(2)", colors2, 5);
+
+        // Animate the rotation of the third square (X-axis)
+        gsap.to(".square:nth-child(3)", {
+            rotationX: 360,
+            duration: 5,
+            repeat: -1,
+            ease: "linear"
+        });
+
+        // Animate the background color of the third square
+        animateBackgroundColor(".square:nth-child(3)", colors3, 5);
+    </script>
+</body>
+</html>
